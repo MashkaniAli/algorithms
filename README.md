@@ -1,6 +1,7 @@
-# Flutter Login
-[![pub package](https://img.shields.io/pub/v/algorithm)]
-[![Workflow](https://github.com/NearHuscarl/flutter_login/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/NearHuscarl/flutter_login/actions)
+# Flutter Algorithm
+![pub package](https://img.shields.io/pub/v/algorithm)
+
+<p align="center"><b>This design is for an algorithm design lesson.</b></p>
 
 `QuickSort & Sum` is a ready-to-use widget for calculating algorithms.
 Shows the capabilities of the filter
