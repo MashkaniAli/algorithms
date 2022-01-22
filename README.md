@@ -7,7 +7,7 @@ Shows the capabilities of the filter
 
 <p align="center">
   <a href='https://imgur.com/a/5H9k8de'>
-    <img src='https://github.com/MashkaniAli/algorithms/blob/master/demo/demo.mp4' width=320>
+    <img src='https://github.com/MashkaniAli/algorithms/blob/master/demo/demo.gif' width=320>
   </a>
 </p>
 
