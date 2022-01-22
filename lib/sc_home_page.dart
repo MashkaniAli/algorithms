@@ -1,4 +1,5 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_sort_algoritm/sc_quick_sort_algorithm.dart';
 import 'package:quick_sort_algoritm/sc_sum_algorithm.dart';
@@ -11,6 +12,8 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _ComplexDrawerPageState extends State<HomePageScreen> {
+
+
   int pageIndex = 0; // page count
   final SumAlgorithmScreen _sumAlgorithm =
       const SumAlgorithmScreen(); //page screen
@@ -37,7 +40,26 @@ class _ComplexDrawerPageState extends State<HomePageScreen> {
       child: Scaffold(
         //appBar: appBar(),
         body: _showPage,
-        bottomNavigationBar: BottomNavyBar(
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          color: const Color(0xFF1A374D),
+          items: const [
+            Icon(
+              Icons.merge_type,
+              color: Colors.white,
+            ),
+            Icon(
+              Icons.functions_outlined,
+              color: Colors.white,
+            )
+          ],
+          onTap: (int tapped) {
+            setState(() {
+              _showPage = _pageChooser(tapped);
+            });
+          },
+        ),
+        /*bottomNavigationBar: BottomNavyBar(
           onItemSelected: (index) {
             setState(() {
               pageIndex = index;
@@ -65,7 +87,7 @@ class _ComplexDrawerPageState extends State<HomePageScreen> {
                 inactiveColor: Colors.black45),
           ],
           selectedIndex: pageIndex,
-        ),
+        ),*/
         drawerScrimColor: Colors.transparent,
         backgroundColor: const Color(0xffe3e9f7),
       ),

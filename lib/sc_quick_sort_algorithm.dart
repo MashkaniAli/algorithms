@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuickSortAlgorithmScreen extends StatefulWidget {
   const QuickSortAlgorithmScreen({Key? key}) : super(key: key);
@@ -8,9 +9,9 @@ class QuickSortAlgorithmScreen extends StatefulWidget {
 }
 
 class _AlgorithmHomeScreenState extends State<QuickSortAlgorithmScreen> {
-  late String numbers;
   List<String> number = [];
   List<int> result = [];
+  List<int> finalResult = [];
 
   @override
   Widget build(BuildContext context) {
@@ -135,15 +136,14 @@ class _AlgorithmHomeScreenState extends State<QuickSortAlgorithmScreen> {
                           child: TextFormField(
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
-                              numbers = value;
-                              number = numbers.split(",");
-                              result = [];
+                              number = value.split(",");
                               //print(number.runtimeType);
                             },
                             textDirection: TextDirection.ltr,
                             decoration: const InputDecoration(
                                 hintText: "مثال: 1,5,3,2,4",
-                                border: InputBorder.none),
+                                border: InputBorder.none,
+                                labelText: 'لیست اعداد'),
                           )),
                       Padding(
                         padding: const EdgeInsets.only(top: 60, bottom: 30),
@@ -153,11 +153,39 @@ class _AlgorithmHomeScreenState extends State<QuickSortAlgorithmScreen> {
                               setState(() {
                                 result =
                                     number.map((e) => int.parse(e)).toList();
-                                //print(result.runtimeType);
-                                var i = quickSort(result, 0 , result.length - 1);
-                                print("i");
-                                print(i);
-                                //print(s);
+                                int high = result.length - 1;
+                                int low = 0;
+                                finalResult = quickSort(result, low, high);
+                                print(finalResult);
+                                String exit = "لیست اعداد مرتب شده:  " + finalResult.toString();
+                                Alert(
+                                    context: context,
+                                    title: "لیست اعداد مرتب شده",
+                                    type: AlertType.success,
+                                    desc: finalResult.toString(),
+                                    style: const AlertStyle(
+                                        alertElevation: 5.0,
+                                        descStyle: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18,
+                                            fontFamily: 'IRANSANS')),
+                                    buttons: [
+                                      DialogButton(
+                                          child: const Text(
+                                            'تایید',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.white),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              number.clear();
+                                              result.clear();
+                                            });
+                                            Navigator.of(context).pop();
+                                          }),
+                                    ]).show();
                               });
                             },
                             child: Container(
@@ -168,7 +196,7 @@ class _AlgorithmHomeScreenState extends State<QuickSortAlgorithmScreen> {
                               height: 50,
                               child: const Center(
                                   child: Text(
-                                "برای محاسبه جمع اینجا بزنید",
+                                "برای مرتب سازی اعداد اینجا بزنید",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -185,38 +213,40 @@ class _AlgorithmHomeScreenState extends State<QuickSortAlgorithmScreen> {
             )));
   }
 
-  partition(arr, start, end){
-    // Taking the last element as the pivot
-    var pivotValue = arr[end];
-    var pivotIndex = start;
-    for (var i = start; i < end; i++) {
-      if (arr[i] < pivotValue) {
-        // Swapping elements
-        var b = arr[i];
-        arr[i] = arr[pivotIndex];
-        arr[pivotIndex] = b;
-        // Moving to next element
-        pivotIndex++;
-      }
+  List<int> quickSort(List<int> list, int low, int high) {
+    if (low < high) {
+      int pi = partition(list, low, high);
+      quickSort(list, low, pi - 1);
+      quickSort(list, pi + 1, high);
     }
-    // Putting the pivot value in the middle
-    var c = arr[pivotIndex];
-    arr[pivotIndex] = arr[end];
-    arr[end] = c;
-    return pivotIndex;
+    return list;
   }
 
-  quickSort(arr, start, end) {
-    // Base case or terminating case
-    if (start >= end) {
-      return;
+  int partition(List<int> list, low, high) {
+    // Base check
+    if (list.isEmpty) {
+      return 0;
     }
+    // Take our last element as pivot and counter i one less than low
+    int pivot = list[high];
 
-    // Returns pivotIndex
-    var index = partition(arr, start, end);
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+      // When j is < than pivot element we increment i and swap arr[i] and arr[j]
+      if (list[j] < pivot) {
+        i++;
+        swap(list, i, j);
+      }
+    }
+    // Swap the last element and place in front of the i'th element
+    swap(list, i + 1, high);
+    return i + 1;
+  }
 
-    // Recursively apply the same logic to the left and right subarrays
-    quickSort(arr, start, index - 1);
-    quickSort(arr, index + 1, end);
+// Swapping using a temp variable
+  void swap(List list, int i, int j) {
+    int temp = list[i];
+    list[i] = list[j];
+    list[j] = temp;
   }
 }
